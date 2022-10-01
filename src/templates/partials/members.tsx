@@ -60,31 +60,37 @@ function renderGroup(context: Context, group: ReflectionGroup) {
                 <a href={`#group.${group.title}`} class="anchor"></a>
             </h2>
 
-            {group.children.map((item) => !item.hasOwnDocument && renderMember(context, item))}
+            {group.children.map((item) => !item.hasOwnDocument && renderMember(context, item, group.title))}
         </>
     );
 }
 
-function renderMember(context: Context, member: DeclarationReflection) {
-    const srcLink = member.sources?.[0].url;
+const COLLAPSE_GROUPS = ['Methods', 'Functions', 'Events'];
 
+function renderMember(context: Context, member: DeclarationReflection, group?: string) {
+    const srcLink = member.sources?.[0].url;
+    const overrideCount = member.signatures?.length;
     return (
         <div>
             <details class="rustdoc-toggle implementors-toggle" open>
                 <summary>
                     <section id={member.anchor} class={`impl ${srcLink ? 'has-srclink' : ''}`}>
-                        {srcLink && (
+                        {/* {srcLink && (
                             <span class="rightside">
-                                <a class="srclink" href={srcLink}>source</a>
+                                <a class="srclink" href={srcLink} aria-label="source"></a>
                             </span>
-                        )}
+                        )} */}
                         <a href={`#${member.anchor}`} class="anchor"></a>
-                        <h3 class="code-header in-band">
-                            {member.name}
-                        </h3>
+                        { (group && COLLAPSE_GROUPS.includes(group)) && (
+                            (overrideCount && overrideCount > 1) && (
+                            <h3 class="in-band">
+                            {member.name} <span class="code-attribute">({overrideCount} overrides)</span>
+                            </h3>
+                            )
+                        )}
                     </section>
                 </summary>
-                <div class="impl-items">
+                <div class="impl-items" style={overrideCount && overrideCount > 1 ? 'padding-left:1em' : ''} >
                     {renderMemberDetail(context, member)}
                     {/* TODO: member.groups */}
                 </div>
@@ -123,7 +129,7 @@ function renderSignature(context: Context, signature: SignatureReflection, title
                 <section id={signature.anchor} class={`method ${srcLink ? 'has-srclink' : ''}`}>
                     {srcLink && (
                         <span class="rightside">
-                            <a class="srclink" href={srcLink}>source</a>
+                            <a class="srclink" href={srcLink} aria-label="source"></a>
                         </span>
                     )}
                     <a href={`#${signature.anchor}`} class="anchor"></a>
@@ -144,7 +150,7 @@ function renderSignature(context: Context, signature: SignatureReflection, title
 
 function renderSignatureTitle(context: Context, signature: SignatureReflection) {
     const title = context.memberSignatureTitle(signature, {
-        hideName: true,
+        hideName: false,
     });
 
     return transformClassName(title);
@@ -186,7 +192,7 @@ function renderDeclaration(context: Context, decl: DeclarationReflection) {
                 <section id={decl.anchor} class={`method ${srcLink ? 'has-srclink' : ''}`}>
                     {srcLink && (
                         <span class="rightside">
-                            <a class="srclink" href={srcLink}>source</a>
+                            <a class="srclink" href={srcLink} aria-label="source"></a>
                         </span>
                     )}
                     <a href={`#${decl.anchor}`} class="anchor"></a>

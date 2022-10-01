@@ -22,8 +22,8 @@ export const comment: Template<JSX.Element, Reflection> = (context, model) => {
                     {model.comment.tags?.map((tag) => (
                         <div class="item-row">
                             <div class="item-left module-item">
-                                <span class="stab portability" title={tag.tagName}>
-                                    <code>
+                                <span class={`stab ${tag.tagName == 'deprecated'? 'deprecated' : 'portability' }`} title={tag.tagName}>
+                                    <code style='background-color:inherit;'>
                                         {tag.tagName}
                                         {tag.paramName ? ` ${tag.paramName}` : ""}
                                     </code>

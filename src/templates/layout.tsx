@@ -60,7 +60,9 @@ export const layout: Template<JSX.Element> = (context, page) => {
                             <img class="rust-logo" src={logoUrl} alt="logo" />
                         </div>
                     </a>
-                    <h2 class="location"></h2>
+                    <h2 style="margin: auto 0;padding: 0;border: 0;">
+                        <a href={context.relativeURL("index.html")}>{project.name}</a>
+                    </h2>
                 </nav>
 
                 <nav class="sidebar">

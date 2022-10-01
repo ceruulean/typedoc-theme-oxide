@@ -19,7 +19,7 @@ export const project: Template<JSX.Element, PageEvent<ProjectReflection>> = (con
                 <span class="out-of-band">
                     {model.sources?.[0].url && (
                         <>
-                            <a class="srclink" href={model.sources[0].url}>source</a>
+                            <a class="srclink" href={model.sources[0].url} aria-label="source"></a>
                             {' · '}
                         </>
                     )}

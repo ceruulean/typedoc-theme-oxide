@@ -9,7 +9,7 @@ export const navigation: Template<JSX.Element> = (context, page) => {
     return (
         <>
             <h2 class="location">
-                <a href="#">{project.name}</a>
+                <a href={context.relativeURL("index.html")}>{project.name}</a>
             </h2>
 
             <div class="sidebar-elems">
